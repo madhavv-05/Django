@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Your Recipe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+        }
+        div {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        input[type="file"] {
+            padding: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+           
+        </div>
+        <div class="navbar-right">
+            <span class="username"> 
+                {{request.user}}</span>
+            <a href="/logout/" type="submit">Logout</a>
+        </div>
+    </nav>
+    <centre>
+<h1>Submit Your Recipe</h1>
+</centre    >
+
+
+<form  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        <label for="recipeName">Recipe Name:</label>
+        <input type="text" id="receipe_name" name="receipe_name" required>
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <textarea id="receipe_des" name="receipe_des" rows="5" required></textarea>
+    </div>
+    <div>
+        <label for="foodImage">Image of the Food:</label>
+        <input type="file" id="receipe_img" name="receipe_img" accept="image/*" >
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+   
+
+   <table border="2px">
+    <tr>
+        <th>number</th>
+        <th>Recipe Name</th>
+        <th> des</th>
+        <th>Image</th>
+        <th>delete</th>
+        <td>update</td>
+
+    
+    </tr>
+    {%for receipe in receipes%}
+    <tr>
+        
+        <td>
+            {{forloop.counter}}
+        </td>
+        <td>{{receipe.receipe_name}}</td>
+        <td>{{receipe.receipe_des}}</td>
+        
+        <td><img src="image\{{receipe.receipe_img}}"></td>
+        <td>
+            <a href="/delete-rec/{{receipe.id}}/">Delete</a>
+        </td>
+        <td>
+            <a href="/update-rec/{{receipe.id}}/">Update</a>
+        </td>
+
+
+
+        
+    </tr>
+    {% endfor %}
+   </table>
+  
+</form>
+
+</body>
+</html>

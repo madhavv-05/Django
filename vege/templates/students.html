@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Table</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        
+    </style>
+</head>
+<body>
+
+<h2>Student Table</h2>
+<form>
+<div class="search-container">
+    <input type="text" placeholder="Search..." name="search">
+    <button >Search</button>
+</div>
+</form>
+<table>
+    <tr>
+        <th>Serial Number</th>
+        <th>Student ID</th>
+        <th>Student Name</th>
+        <th>Student Department</th>
+        <th>Student Email</th>
+        <th>Student Age</th>
+
+    </tr>
+    
+    {% for student in set %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ student.student_id }}</td>
+        <td>{{ student.student_name }}</td>
+        <td>{{ student.department.department }}</td>
+        <td>{{ student.student_email }}</td>
+        <td>{{ student.student_age }}</td>
+        
+    
+        
+    </tr>
+    {% endfor %}
+    
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if set.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ set.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ set.number }} of {{ set.paginator.num_pages }}.
+        </span>
+
+        {% if set.has_next %}
+            <a href="?page={{ set.next_page_number }}">next</a>
+            <a href="?page={{ set.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</body>
+</html>
