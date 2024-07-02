@@ -7,7 +7,7 @@ from django.contrib.auth import *
 from django.contrib.auth.decorators import login_required
 from .models import *
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q,Sum
 
 @login_required(login_url="/login")
 def receipe(request):
@@ -115,3 +115,8 @@ def get_students(request):
     marks_set=SubjectMarks.objects.all()
     page_obj = paginator.get_page(page_number)
     return render(request, "students.html", {'set':page_obj})
+
+def see_marks(request, student_id):
+    set=SubjectMarks.objects.filter(student__student_id__student_id=student_id)
+    total_marks=set.aggregate(total_marks=Sum('marks'))
+    return render(request, "see_marks.html", {'set':set,'total_marks':total_marks})

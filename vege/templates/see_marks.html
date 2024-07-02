@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Table</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        
+    </style>
+</head>
+<body>
+
+<h2>Student Table</h2>
+<h3>Rank: </h3>
+<h3>Total: {{total_marks.total_marks}}</h3>
+<table>
+    
+    <tr>
+        <th>Serial Number</th>
+        <th>Subject</th>
+        <th>Marks</th>
+     
+    </tr>
+
+    {% for marks in set %}
+    <tr>
+        
+        <td>{{ forloop.counter }}</td>
+        <td>{{ marks.subject.subject_name }}</td>
+        <td>{{marks.marks}}</td>
+      
+        
+    
+        
+    </tr>
+    {% endfor %}
+    
+</table>
+
+
+</body>
+</html>
