@@ -96,7 +96,7 @@ def logout_page(request):
     logout(request)
     return redirect('/login/')
 
-okay
+
 def get_students(request):
     set=Student.objects.all()
     
