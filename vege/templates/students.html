@@ -42,7 +42,7 @@
 
     </tr>
     
-    {% for student in set %}
+    {% for student in query %}
     <tr>
         <td>{{ forloop.counter }}</td>
         <td>
@@ -63,18 +63,18 @@
 
 <div class="pagination">
     <span class="step-links">
-        {% if set.has_previous %}
+        {% if query.has_previous %}
             <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ set.previous_page_number }}">previous</a>
+            <a href="?page={{ query.previous_page_number }}">previous</a>
         {% endif %}
 
         <span class="current">
-            Page {{ set.number }} of {{ set.paginator.num_pages }}.
+            Page {{ query.number }} of {{ query.paginator.num_pages }}.
         </span>
 
-        {% if set.has_next %}
-            <a href="?page={{ set.next_page_number }}">next</a>
-            <a href="?page={{ set.paginator.num_pages }}">last &raquo;</a>
+        {% if query.has_next %}
+            <a href="?page={{ query.next_page_number }}">next</a>
+            <a href="?page={{ query.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
     </span>
 </div>

@@ -25,7 +25,7 @@
 <body>
 
 <h2>Student Table</h2>
-<h3>Rank: </h3>
+<h3>Rank: {{current_rank}}</h3>
 <h3>Total: {{total_marks.total_marks}}</h3>
 <table>
     
@@ -36,7 +36,7 @@
      
     </tr>
 
-    {% for marks in set %}
+    {% for marks in query %}
     <tr>
         
         <td>{{ forloop.counter }}</td>

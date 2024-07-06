@@ -1,6 +1,7 @@
 from faker import Faker
-from .models import *
+from vege.models import *
 import random
+from django.db.models import Sum
 
 fake=Faker()
 
@@ -44,3 +45,16 @@ def create_sub_marks(n):
                 )
     except Exception as e:
         print(e)
+
+
+def report_card():
+    current_rank=-1
+    i=1
+    ranks= Student.objects.annotate(marks=Sum('studentmarks__marks')).order_by('-marks')
+    for rank in ranks:
+       ReportCard.objects.create(
+           student=rank,
+           student_rank=i
+       )
+       i=i+1
+

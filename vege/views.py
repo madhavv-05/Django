@@ -23,32 +23,32 @@ def receipe(request):
         )
         return redirect('/receipe')
     
-    set=Receipe.objects.all()
-    context={'receipes': set}
+    query=Receipe.objects.all()
+    context={'receipes': query}
     return render(request, 'receipe.html', context)
 
 def delete_rec(request,id):
-    set=Receipe.objects.get(id=id)
-    set.delete()
+    query=Receipe.objects.get(id=id)
+    query.delete()
     return redirect('/receipe')
 
 def update_rec(request,id):
-    set=Receipe.objects.get(id=id)
+    query=Receipe.objects.get(id=id)
     if request.method=="POST":
         data=request.POST
         receipe_name=data.get('receipe_name')
         receipe_des=data.get('receipe_des')
         receipe_img=request.FILES.get('receipe_img')
-        set.receipe_name=receipe_name
-        set.receipe_des=receipe_des
+        query.receipe_name=receipe_name
+        query.receipe_des=receipe_des
 
         if receipe_img:
-                set.receipe_img=receipe_img
+                query.receipe_img=receipe_img
         
-        set.save()
+        query.save()
         return redirect('/receipe')
 
-    context={'receipe':set}
+    context={'receipe':query}
     return render(request,'update_rec.html',context)
 
 
@@ -98,11 +98,12 @@ def logout_page(request):
 
 
 def get_students(request):
-    set=Student.objects.all()
+    query=Student.objects.all()
+    
     
     if request.GET.get('search'):
         searchs=request.GET.get('search')
-        set=set.filter(
+        query=query.filter(
             Q(student_name__icontains=searchs)|
             Q(student_email__icontains=searchs)|
           
@@ -110,13 +111,26 @@ def get_students(request):
             Q(department__department__icontains=searchs)|
             Q(student_id__student_id__icontains=searchs)
             )
-    paginator = Paginator(set, 25)  
+    paginator = Paginator(query, 25)  
     page_number = request.GET.get("page",1)
     marks_set=SubjectMarks.objects.all()
     page_obj = paginator.get_page(page_number)
-    return render(request, "students.html", {'set':page_obj})
+    return render(request, "students.html", {'query':page_obj})
+
+
+from .seed import *
 
 def see_marks(request, student_id):
-    set=SubjectMarks.objects.filter(student__student_id__student_id=student_id)
-    total_marks=set.aggregate(total_marks=Sum('marks'))
-    return render(request, "see_marks.html", {'set':set,'total_marks':total_marks})
+    #
+    # report_card()
+    query=SubjectMarks.objects.filter(student__student_id__student_id=student_id)
+    total_marks=query.aggregate(total_marks=Sum('marks'))
+    current_rank=-1
+    i=1
+    ranks= Student.objects.annotate(marks=Sum('studentmarks__marks')).order_by('marks')
+    for rank in ranks:
+        if student_id==rank.student_id.student_id:
+            current_rank=i  
+            break
+        i=i+1
+    return render(request, "see_marks.html", {'query':query,'total_marks':total_marks,'current_rank':current_rank,})
